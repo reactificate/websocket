@@ -1,7 +1,7 @@
 {
     "name": "reactificate/websocket",
     "description": "Reactificate Websocket",
-    "type": "project",
+    "type": "library",
     "require-dev": {
         "phpstan/phpstan": "^0.12.80"
     },
