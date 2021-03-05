@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": "^7.4 || ^8.0",
-        "reactificate/utils": "^0.0.2",
+        "reactificate/utils": "^0",
         "react/http": "^1.2",
         "nette/utils": "^3.2",
         "voryx/websocketmiddleware": "^2.0"
