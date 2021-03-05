@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Reactify\Websocket;
+namespace Reactificate\Websocket;
 
 
 use InvalidArgumentException;
 use Nette\Utils\Json;
-use Reactify\Console;
+use Reactificate\Console;
 use Voryx\WebSocketMiddleware\WebSocketConnection;
 
 class Connection implements ConnectionInterface

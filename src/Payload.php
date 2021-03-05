@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Reactify\Websocket;
+namespace Reactificate\Websocket;
 
 
 use JsonSerializable;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
-use Reactify\Websocket\Exceptions\InvalidPayloadException;
+use Reactificate\Websocket\Exceptions\InvalidPayloadException;
 use stdClass;
 
 class Payload implements JsonSerializable

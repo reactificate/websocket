@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Reactify\Websocket;
+namespace Reactificate\Websocket;
 
 
 use Nette\Utils\JsonException;
 
 /**
  * Class Notification
- * @package Reactify\Websocket
+ * @package Reactificate\Websocket
  */
 class Notification
 {
@@ -66,6 +66,6 @@ class Notification
             ];
         }
 
-        self::$connection->send('reactify.notification', $notifData);
+        self::$connection->send('Reactificate.notification', $notifData);
     }
 }

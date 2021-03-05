@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Reactify\Websocket\Exceptions;
+namespace Reactificate\Websocket\Exceptions;
 
 
 use Exception;

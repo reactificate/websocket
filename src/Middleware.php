@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Reactify\Websocket;
+namespace Reactificate\Websocket;
 
 
 use Nette\Utils\JsonException;
 use Ratchet\RFC6455\Messaging\Message;
-use Reactify\Websocket\Exceptions\InvalidPayloadException;
+use Reactificate\Websocket\Exceptions\InvalidPayloadException;
 use Throwable;
 use Voryx\WebSocketMiddleware\WebSocketConnection;
 

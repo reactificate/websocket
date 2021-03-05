@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Reactify\Websocket;
+namespace Reactificate\Websocket;
 
 
 class ServerInfo
