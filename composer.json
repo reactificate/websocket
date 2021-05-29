@@ -14,6 +14,7 @@
     ],
     "require": {
         "php": "^7.4 || ^8.0",
+        "ext-json": "*",
         "reactificate/utils": "^0",
         "react/http": "^1.2",
         "nette/utils": "^3.2",

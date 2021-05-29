@@ -20,7 +20,7 @@ class ServerInfo
         return $this;
     }
 
-    public function getInfo(): string
+    public function getPrefix(): string
     {
         return $this->serverPrefix;
     }

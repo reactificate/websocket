@@ -9,15 +9,34 @@ use Ratchet\RFC6455\Messaging\Message;
 use Reactificate\Websocket\Exceptions\InvalidPayloadException;
 use Throwable;
 use Voryx\WebSocketMiddleware\WebSocketConnection;
+use Voryx\WebSocketMiddleware\WebSocketMiddleware;
 
 class Middleware
 {
     protected WebSocketHandlerInterface $handler;
 
 
-    public function __construct(WebSocketHandlerInterface $socketHandler)
+    /**
+     * @param WebSocketHandlerInterface ...$webSocketHandlers
+     * @return WebSocketMiddleware[]
+     */
+    public static function create(WebSocketHandlerInterface ...$webSocketHandlers): array
     {
-        $this->handler = $socketHandler;
+        $wsMiddleware = [];
+
+        foreach ($webSocketHandlers as $webSocketHandler) {
+            $wsMiddleware[] = new WebSocketMiddleware(
+                [$webSocketHandler->getServerInfo()->getPrefix()],
+                new Middleware($webSocketHandler)
+            );
+        }
+
+        return $wsMiddleware;
+    }
+
+    public function __construct(WebSocketHandlerInterface $webSocketHandler)
+    {
+        $this->handler = $webSocketHandler;
     }
 
 
@@ -31,7 +50,7 @@ class Middleware
             try {
                 $constructedPayload = new Payload($message->getPayload());
                 $this->handler->onMessage($constructedConnection, $constructedPayload);
-            } catch (InvalidPayloadException|JsonException $payloadException) {
+            } catch (InvalidPayloadException | JsonException $payloadException) {
                 $constructedConnection->send([
                     'command' => 'system.response.500',
                     'message' => $payloadException->getMessage()

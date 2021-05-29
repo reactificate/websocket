@@ -67,9 +67,9 @@ class Payload implements JsonSerializable
 
     /**
      * Get sent message
-     * @return string|null
+     * @return string|stdClass|null
      */
-    public function message(): ?string
+    public function message()
     {
         return $this->decodedPayload->message ?? null;
     }
