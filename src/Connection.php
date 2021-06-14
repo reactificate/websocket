@@ -7,6 +7,7 @@ namespace Reactificate\Websocket;
 use InvalidArgumentException;
 use Nette\Utils\Json;
 use Reactificate\Console;
+use SplObjectStorage;
 use Voryx\WebSocketMiddleware\WebSocketConnection;
 
 class Connection implements ConnectionInterface
@@ -14,6 +15,9 @@ class Connection implements ConnectionInterface
     protected int $resourceId;
 
     protected WebSocketConnection $connection;
+
+    protected array $attributes;
+
 
     public function __construct(WebsocketConnection $connection)
     {
@@ -25,9 +29,9 @@ class Connection implements ConnectionInterface
     /**
      * @inheritDoc
      */
-    public function send($commandOrPayload, $payload = null)
+    public function send($commandOrPayload, $payload = null): void
     {
-        switch (true){
+        switch (true) {
             case is_array($commandOrPayload):
                 $commandOrPayload['time'] = microtime(true);
                 $commandOrPayload = Json::encode($commandOrPayload);
@@ -37,7 +41,7 @@ class Connection implements ConnectionInterface
                 $commandOrPayload = Json::encode($commandOrPayload);
                 break;
             case is_scalar($commandOrPayload):
-                if(null !== $payload){
+                if (null !== $payload) {
                     $commandOrPayload = Json::encode([
                         'command' => $commandOrPayload,
                         'data' => $payload,
@@ -55,7 +59,7 @@ class Connection implements ConnectionInterface
     /**
      * @inheritDoc
      */
-    public function close()
+    public function close(): void
     {
         $this->connection->close();
     }
@@ -74,5 +78,23 @@ class Connection implements ConnectionInterface
     public function getConnection(): WebSocketConnection
     {
         return $this->connection;
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public function setField(string $name, $value): void
+    {
+        $this->attributes[$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getField(string $name)
+    {
+        return $this->attributes[$name] ?? null;
     }
 }
