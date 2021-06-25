@@ -48,7 +48,7 @@ class Middleware
 
         $connection->on('message', function (Message $message) use ($constructedConnection) {
             try {
-                $constructedPayload = new Payload($message->getPayload());
+                $constructedPayload = new Payload($constructedConnection, $message->getPayload());
                 $this->handler->onMessage($constructedConnection, $constructedPayload);
             } catch (InvalidPayloadException | JsonException $payloadException) {
                 $constructedConnection->send([

@@ -16,17 +16,20 @@ class Payload implements JsonSerializable
 
     protected stdClass $decodedPayload;
 
+    protected ConnectionInterface $connection;
+
 
     /**
      * Payload constructor.
+     * @param ConnectionInterface $connection
      * @param string $strPayload
      * @throws InvalidPayloadException
      * @throws JsonException
      */
-    public function __construct(string $strPayload)
+    public function __construct(ConnectionInterface $connection, string $strPayload)
     {
         $this->decodedPayload = Json::decode($strPayload);
-
+        $this->connection = $connection;
         $this->originalPayload = $strPayload;
 
         if (!$this->decodedPayload->command) {
@@ -48,7 +51,18 @@ class Payload implements JsonSerializable
     }
 
     /**
+     * Gets payload's client connection
+     *
+     * @return ConnectionInterface
+     */
+    public function connection(): ConnectionInterface
+    {
+        return $this->connection;
+    }
+
+    /**
      * Get sent time
+     *
      * @return int
      */
     public function time(): int
@@ -58,6 +72,7 @@ class Payload implements JsonSerializable
 
     /**
      * Get sent command
+     *
      * @return string|null
      */
     public function command(): ?string
@@ -67,6 +82,7 @@ class Payload implements JsonSerializable
 
     /**
      * Get sent message
+     *
      * @return string|stdClass|null
      */
     public function message()
@@ -76,6 +92,7 @@ class Payload implements JsonSerializable
 
     /**
      * Get sent authentication token
+     *
      * @return string|null
      */
     public function token(): ?string
@@ -85,6 +102,7 @@ class Payload implements JsonSerializable
 
     /**
      * Gets original payload
+     *
      * @return string
      */
     public function originalPayload(): string

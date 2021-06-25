@@ -6,8 +6,6 @@ namespace Reactificate\Websocket;
 
 use InvalidArgumentException;
 use Nette\Utils\Json;
-use Reactificate\Console;
-use SplObjectStorage;
 use Voryx\WebSocketMiddleware\WebSocketConnection;
 
 class Connection implements ConnectionInterface
