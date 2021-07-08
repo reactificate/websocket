@@ -39,7 +39,7 @@ class Connection implements ConnectionInterface
                 $commandOrPayload = Json::encode($commandOrPayload);
                 break;
             case is_scalar($commandOrPayload):
-                if (null == $payload) {
+                if (null === $payload) {
                     $commandOrPayload = Json::encode([$payload, microtime(true)]);
                 } else {
                     $commandOrPayload = Json::encode([
