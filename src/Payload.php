@@ -91,7 +91,7 @@ class Payload implements JsonSerializable
         if ($key) {
             if (
                 $message
-                && is_object($message)
+                && is_array($message)
                 && isset($message[$key])
             ) {
                 return $message[$key];
