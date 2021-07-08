@@ -31,7 +31,7 @@ class Payload implements JsonSerializable
         $this->connection = $connection;
         $this->originalPayload = $strPayload;
 
-        if (!$this->decodedPayload->command) {
+        if (!$this->decodedPayload['command']) {
             InvalidPayloadException::create('No payload command specified.');
         }
     }
