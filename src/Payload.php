@@ -85,8 +85,19 @@ class Payload implements JsonSerializable
      *
      * @return string|stdClass|null
      */
-    public function message()
+    public function message(?string $key = null)
     {
+        if ($key) {
+            if (
+                is_object($this->decodedPayload)
+                && property_exists($this->decodedPayload, $key)
+            ) {
+                return $this->decodedPayload->$key;
+            }
+
+            return null;
+        }
+
         return $this->decodedPayload->message ?? null;
     }
 
