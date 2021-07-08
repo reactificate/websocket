@@ -4,6 +4,7 @@
 namespace Reactificate\Websocket\Prebuilt\Servers;
 
 
+use Nette\Utils\JsonException;
 use Reactificate\Websocket\ConnectionInterface;
 use Reactificate\Websocket\Payload;
 use Reactificate\Websocket\ServerInfo;
@@ -28,14 +29,15 @@ class ChatServer implements WebSocketHandlerInterface
 
     /**
      * @inheritDoc
+     * @throws JsonException
      */
     public function onMessage(ConnectionInterface $connection, Payload $payload): void
     {
         if ('chat.message' == $payload->command()){
             foreach ($this->users as $user){
                 $user->send('chat.message',  [
-                    'username' => $payload->message()->username,
-                    'message' => $payload->message()->message
+                    'username' => $payload->message('username'),
+                    'message' => $payload->message('message')
                 ]);
             }
         }

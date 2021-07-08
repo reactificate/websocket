@@ -8,13 +8,12 @@ use JsonSerializable;
 use Nette\Utils\Json;
 use Nette\Utils\JsonException;
 use Reactificate\Websocket\Exceptions\InvalidPayloadException;
-use stdClass;
 
 class Payload implements JsonSerializable
 {
     protected string $originalPayload;
 
-    protected stdClass $decodedPayload;
+    protected array $decodedPayload;
 
     protected ConnectionInterface $connection;
 
@@ -28,7 +27,7 @@ class Payload implements JsonSerializable
      */
     public function __construct(ConnectionInterface $connection, string $strPayload)
     {
-        $this->decodedPayload = Json::decode($strPayload);
+        $this->decodedPayload = Json::decode($strPayload, Json::FORCE_ARRAY);
         $this->connection = $connection;
         $this->originalPayload = $strPayload;
 
@@ -67,7 +66,7 @@ class Payload implements JsonSerializable
      */
     public function time(): int
     {
-        return $this->decodedPayload->time ?? 0;
+        return $this->decodedPayload['time'] ?? 0;
     }
 
     /**
@@ -77,25 +76,25 @@ class Payload implements JsonSerializable
      */
     public function command(): ?string
     {
-        return $this->decodedPayload->command ?? null;
+        return $this->decodedPayload['command'] ?? null;
     }
 
     /**
      * Get sent message
      *
-     * @return string|stdClass|null
+     * @return string|array|null
      */
     public function message(?string $key = null)
     {
-        $message = $this->decodedPayload->message ?? null;
+        $message = $this->decodedPayload['message'] ?? null;
 
         if ($key) {
             if (
                 $message
                 && is_object($message)
-                && isset($message->$key)
+                && isset($message[$key])
             ) {
-                return $message->$key;
+                return $message[$key];
             }
 
             return null;
@@ -111,7 +110,7 @@ class Payload implements JsonSerializable
      */
     public function token(): ?string
     {
-        return $this->decodedPayload->token ?? null;
+        return $this->decodedPayload['token'] ?? null;
     }
 
     /**
