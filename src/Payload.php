@@ -114,6 +114,26 @@ class Payload implements JsonSerializable
     }
 
     /**
+     * @param ConnectionInterface|array $connection
+     * A connection or array of connections that will receive this payload
+     * @throws JsonException
+     */
+    public function forward($connection): void
+    {
+        if ($connection instanceof ConnectionInterface) {
+            $connection->send($this->command(), $this->message());
+            return;
+        }
+
+        foreach ($connection as $conn) {
+            if ($conn instanceof ConnectionInterface) {
+                $conn->send($this->command(), $this->message());
+                return;
+            }
+        }
+    }
+
+    /**
      * Gets original payload
      *
      * @return string

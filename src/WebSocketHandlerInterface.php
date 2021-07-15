@@ -17,6 +17,7 @@ interface WebSocketHandlerInterface
     /**
      * Method that will be called when message is received
      * @param ConnectionInterface $connection
+     * @throws Throwable
      * @param Payload $payload
      * @return void
      */
