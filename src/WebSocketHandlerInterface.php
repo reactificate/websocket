@@ -10,12 +10,14 @@ interface WebSocketHandlerInterface
 {
     /**
      * Get websocket server information
+     *
      * @return ServerInfo
      */
     public function getServerInfo(): ServerInfo;
 
     /**
      * Method that will be called when message is received
+     *
      * @param ConnectionInterface $connection
      * @throws Throwable
      * @param Payload $payload
@@ -25,6 +27,7 @@ interface WebSocketHandlerInterface
 
     /**
      * Method that will be called when new connection is received
+     *
      * @param ConnectionInterface $connection
      * @return void
      */
@@ -32,6 +35,7 @@ interface WebSocketHandlerInterface
 
     /**
      * Message that will be called when connection is closed
+     *
      * @param ConnectionInterface $connection
      * @return void
      */
@@ -39,6 +43,7 @@ interface WebSocketHandlerInterface
 
     /**
      * Method that will be called when an error occurred
+     *
      * @param ConnectionInterface $connection
      * @param Throwable $exception
      * @return void

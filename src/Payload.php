@@ -42,11 +42,12 @@ class Payload implements JsonSerializable
     }
 
     /**
+     * @internal For internal use only
      * @inheritDoc
      */
     public function jsonSerialize(): array
     {
-        return (array)$this->decodedPayload;
+        return $this->payload();
     }
 
     /**
@@ -114,8 +115,9 @@ class Payload implements JsonSerializable
     }
 
     /**
-     * @param ConnectionInterface|array $connection
      * A connection or array of connections that will receive this payload
+     *
+     * @param ConnectionInterface|array $connection
      * @throws JsonException
      */
     public function forward($connection): void
@@ -131,6 +133,16 @@ class Payload implements JsonSerializable
                 return;
             }
         }
+    }
+
+    /**
+     * Gets json-decoded payload
+     *
+     * @return array
+     */
+    public function payload(): array
+    {
+        return $this->decodedPayload;
     }
 
     /**
