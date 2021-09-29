@@ -4,6 +4,8 @@
 namespace Reactificate\Websocket;
 
 
+use Exception;
+use InvalidArgumentException;
 use Nette\Utils\JsonException;
 
 /**
@@ -12,15 +14,39 @@ use Nette\Utils\JsonException;
  */
 class Notification
 {
-    private static string $title;
-    private static string $body;
-    private static string $icon = '';
+    private array $notificationData = [
+        'title' => null,
+        'body' => null,
+        'icon' => null,
+        'vibrate' => false,
+        'silent' => false,
+        'redirect' => null,
+    ];
+
     private static ConnectionInterface $connection;
 
 
+    /**
+     * Creates new notification instance
+     *
+     * @param ConnectionInterface $connection
+     * @return Notification
+     */
     public static function create(ConnectionInterface $connection): Notification
     {
         return new Notification($connection);
+    }
+
+    /**
+     * Publish notification using an array of title, body...
+     *
+     * @param ConnectionInterface $connection
+     * @param array $notificationData
+     * @throws JsonException
+     */
+    public static function publish(ConnectionInterface $connection, array $notificationData): void
+    {
+        Notification::create($connection)->send($notificationData);
     }
 
     public function __construct(ConnectionInterface $connection)
@@ -28,44 +54,68 @@ class Notification
         self::$connection = $connection;
     }
 
+    public function setField(string $key, $value): Notification
+    {
+        $this->notificationData[$key] = $value;
+        return $this;
+    }
+
     public function title(string $title): Notification
     {
-        self::$title = $title;
-        return $this;
+        return $this->setField('title', $this);
     }
 
     public function body(string $body): Notification
     {
-        self::$body = $body;
-        return $this;
+        return $this->setField('body', $body);
     }
 
     public function icon(string $iconUrl): Notification
     {
-        self::$icon = $iconUrl;
-        return $this;
+        return $this->setField('icon', $iconUrl);
+    }
+
+    public function vibrate(bool $vibrate = false): Notification
+    {
+        return $this->setField('vibrate', $vibrate);
+    }
+
+    public function silent(bool $silent = false): Notification
+    {
+        return $this->setField('silent', $silent);
     }
 
     /**
-     * @param array $notifData
-     * @throws JsonException
+     * Sets a link to be redirected when the notification is clicked
+     *
+     * @param string $url
+     * @return $this
      */
-    public function send(array $notifData = []): void
+    public function redirect(string $url): Notification
     {
-        if ([] === $notifData) {
-            if (!isset(self::$title)) {
-                throw new \Exception("Notification title must be provided");
-            }
-            if (!isset(self::$body)) {
-                throw new \Exception("Notification body must be provided");
-            }
-            $notifData = [
-                'title' => self::$title,
-                'body' => self::$body,
-                'icon' => self::$icon,
-            ];
+        return $this->setField('redirect', $url);
+    }
+
+
+    /**
+     * Sends the notification to clientside
+     *
+     * @param array $notificationData
+     * @throws JsonException
+     * @throws Exception
+     */
+    public function send(array $notificationData = []): void
+    {
+        $notificationData = array_merge($this->notificationData, $notificationData);
+
+        if (!empty($notificationData['title'])) {
+            throw new InvalidArgumentException('Notification title must be provided and not empty');
         }
 
-        self::$connection->send('Reactificate.notification', $notifData);
+        if (!empty($notificationData['body'])) {
+            throw new InvalidArgumentException('Notification body must be provided and not empty');
+        }
+
+        self::$connection->send('Reactificate.Notification', $notificationData);
     }
 }

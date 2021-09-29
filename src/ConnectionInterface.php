@@ -15,6 +15,7 @@ interface ConnectionInterface
 {
     /**
      * Send message to client
+     *
      * @param string|array|object $commandOrPayload
      * @param string|array|object|null $payload
      * @throws JsonException
@@ -28,12 +29,14 @@ interface ConnectionInterface
 
     /**
      * Unique identifier to this connection
+     *
      * @return int
      */
     public function getId(): int;
 
     /**
      * Get connection instance
+     *
      * @return WebSocketConnection
      */
     public function getConnection(): WebSocketConnection;
