@@ -108,11 +108,11 @@ class Notification
     {
         $notificationData = array_merge($this->notificationData, $notificationData);
 
-        if (!empty($notificationData['title'])) {
+        if (empty($notificationData['title'])) {
             throw new InvalidArgumentException('Notification title must be provided and not empty');
         }
 
-        if (!empty($notificationData['body'])) {
+        if (empty($notificationData['body'])) {
             throw new InvalidArgumentException('Notification body must be provided and not empty');
         }
 
