@@ -62,7 +62,7 @@ class Notification
 
     public function title(string $title): Notification
     {
-        return $this->setField('title', $this);
+        return $this->setField('title', $title);
     }
 
     public function body(string $body): Notification
